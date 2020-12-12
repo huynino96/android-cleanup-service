@@ -8,6 +8,7 @@
         android:title="Favorites"
         app:showAsAction = "ifRoom"
         />
+
     <item
         android:id = "@+id/action_home"
         android:enabled = "true"
@@ -22,4 +23,6 @@
         android:title="Profile"
         app:showAsAction = "ifRoom"
         />
+
+
 </menu>

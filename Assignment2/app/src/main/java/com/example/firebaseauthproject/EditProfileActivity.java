@@ -1,6 +1,5 @@
-package com.example.trashclean;
+package com.example.firebaseauthproject;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -105,7 +104,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         String name = editTextName.getText().toString().trim();
         String surname = editTextSurname.getText().toString().trim();
         String phoneno = editTextPhoneNo.getText().toString().trim();
-        UserInformation userinformation = new UserInformation(name,surname,phoneno);
+        Userinformation userinformation = new Userinformation(name,surname,phoneno);
         FirebaseUser user = firebaseAuth.getCurrentUser();
         databaseReference.child(user.getUid()).setValue(userinformation);
         Toast.makeText(getApplicationContext(),"User information updated",Toast.LENGTH_LONG).show();
@@ -115,7 +114,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         if (view==btnsave){
             if (imagePath == null) {
 
-                @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable = this.getResources().getDrawable(R.drawable.defavatar);
+                Drawable drawable = this.getResources().getDrawable(R.drawable.defavatar);
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.defavatar);
                 // openSelectProfilePictureDialog();
                 userInformation();
@@ -151,7 +150,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
-    @SuppressLint("SetTextI18n")
     public void openSelectProfilePictureDialog() {
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         TextView title = new TextView(this);

@@ -13,7 +13,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".3"
-            android:text="@string/surname" />
+            android:text="@string/surname"/>
         <EditText
             android:id="@+id/et_userSurname"
             android:layout_width="0dp"

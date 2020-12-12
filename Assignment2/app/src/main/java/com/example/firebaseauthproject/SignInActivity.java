@@ -1,4 +1,4 @@
-package com.example.trashclean;
+package com.example.firebaseauthproject;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,7 +29,7 @@ public class SignInActivity extends AppCompatActivity {
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
         // set the view now
-        setContentView(R.layout.activity_login2);
+        setContentView(R.layout.activity_signin);
         SignInMail = (EditText) findViewById(R.id.SignInMail);
         SignInPass = (EditText) findViewById(R.id.SignInPass);
         SignInButton = (Button) findViewById(R.id.SignInButton);

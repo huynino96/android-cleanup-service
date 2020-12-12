@@ -1,14 +1,15 @@
-package com.example.trashclean;
+package com.example.firebaseauthproject;
 
-public class UserInformation {
+public class Userinformation {
+
     public String name;
     public String surname;
     public String phone;
 
-    public UserInformation(){
+    public Userinformation(){
     }
 
-    public UserInformation(String name,String surname, String phone){
+    public Userinformation(String name,String surname, String phone){
         this.name = name;
         this.surname = surname;
         this.phone = phone;
@@ -19,7 +20,7 @@ public class UserInformation {
     public String getUserSurname() {
         return surname;
     }
-    public String getUserPhone() {
+    public String getUserPhoneno() {
         return phone;
     }
 }

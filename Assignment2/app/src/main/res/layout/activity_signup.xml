@@ -49,7 +49,6 @@
             android:onClick="navigate_sign_in"
             android:clickable="true"
             android:gravity="center"
-            android:textColor="@color/colorPrimaryDark"
-            android:focusable="true" />
+            android:textColor="@color/colorPrimaryDark"/>
     </TableLayout>
 </ScrollView>

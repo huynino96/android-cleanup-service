@@ -1,4 +1,4 @@
-package com.example.trashclean;
+package com.example.firebaseauthproject;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -73,7 +73,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void navigate_sign_in(View v){
-        Intent intent = new Intent(this, SignInActivity.class);
-        startActivity(intent);
+        Intent inent = new Intent(this, SignInActivity.class);
+        startActivity(inent);
     }
 }

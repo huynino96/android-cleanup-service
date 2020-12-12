@@ -1,6 +1,7 @@
-package com.example.trashclean;
+package com.example.firebaseauthproject;
 
 import android.content.Intent;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,15 +17,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //Check current user
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        firebaseAuth.addAuthStateListener(authStateListener);
+      FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+      firebaseAuth.addAuthStateListener(authStateListener);
     }
     FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
         @Override
         public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
-            if (firebaseUser == null) {
+           if (firebaseUser == null) {
                 Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
                 startActivity(intent);
                 finish();
