@@ -15,6 +15,11 @@
     <string name="enter_your_phone_number">Enter Your Phone Number</string>
     <string name="e_mail">Email</string>
     <string name="email_address">Email Address</string>
+    <string name="profile">Profile</string>
+    <string name="dies">Phone</string>
+    <string name="log_out">Log Out</string>
+    <string name="phone">Phone</string>
+
 
 
 </resources>
