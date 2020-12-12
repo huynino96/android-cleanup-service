@@ -1,10 +1,20 @@
 <resources>
     <string name="app_name">Trash Clean</string>
     <string name="sign_up">Register</string>
-    <string name="mail_address">Register</string>
-    <string name="password">Forget Password</string>
+    <string name="mail_address">Mail Address</string>
+    <string name="password">Password</string>
     <string name="ok">OK</string>
     <string name="already_a_member">Already a Member</string>
+    <string name="forget_your_password">Forget Your Password</string>
+    <string name="create_profile">Create Profile</string>
+    <string name="name">Name</string>
+    <string name="enter_your_name">Enter Your Name</string>
+    <string name="surname">Surname</string>
+    <string name="enter_your_surname">Enter Your Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="enter_your_phone_number">Enter Your Phone Number</string>
+    <string name="e_mail">Email</string>
+    <string name="email_address">Email Address</string>
 
 
 </resources>
