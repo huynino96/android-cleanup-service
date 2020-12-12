@@ -1,5 +1,6 @@
 package com.example.firebaseauthproject;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -100,13 +101,13 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             }
         });
     }
-    private void userInformation(){
+    private void UserInformation(){
         String name = editTextName.getText().toString().trim();
         String surname = editTextSurname.getText().toString().trim();
-        String phoneno = editTextPhoneNo.getText().toString().trim();
-        Userinformation userinformation = new Userinformation(name,surname,phoneno);
+        String phone = editTextPhoneNo.getText().toString().trim();
+        UserInformation UserInformation = new UserInformation(name,surname,phone);
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        databaseReference.child(user.getUid()).setValue(userinformation);
+        databaseReference.child(user.getUid()).setValue(UserInformation);
         Toast.makeText(getApplicationContext(),"User information updated",Toast.LENGTH_LONG).show();
     }
     @Override
@@ -114,16 +115,16 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         if (view==btnsave){
             if (imagePath == null) {
 
-                Drawable drawable = this.getResources().getDrawable(R.drawable.defavatar);
+                @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable = this.getResources().getDrawable(R.drawable.defavatar);
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.defavatar);
                 // openSelectProfilePictureDialog();
-                userInformation();
+                UserInformation();
                 // sendUserData();
                 finish();
                 startActivity(new Intent(EditProfileActivity.this, HomeActivity.class));
             }
             else {
-                userInformation();
+                UserInformation();
                 sendUserData();
                 finish();
                 startActivity(new Intent(EditProfileActivity.this, HomeActivity.class));
@@ -150,6 +151,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
+    @SuppressLint("SetTextI18n")
     public void openSelectProfilePictureDialog() {
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         TextView title = new TextView(this);

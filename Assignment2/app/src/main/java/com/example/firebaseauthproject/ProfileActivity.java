@@ -48,7 +48,7 @@ public class ProfileActivity  extends AppCompatActivity {
         profilePicImageView = findViewById(R.id.profile_pic_imageView);
         profileNameTextView = findViewById(R.id.profile_name_textView);
         profileSurnameTextView = findViewById(R.id.profile_surname_textView);
-        profilePhonenoTextView = findViewById(R.id.profile_phoneno_textView);
+        profilePhonenoTextView = findViewById(R.id.profile_phone_textView);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
@@ -72,10 +72,10 @@ public class ProfileActivity  extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Userinformation userProfile = dataSnapshot.getValue(Userinformation.class);
+                UserInformation userProfile = dataSnapshot.getValue(UserInformation.class);
                 profileNameTextView.setText(userProfile.getUserName());
                 profileSurnameTextView.setText(userProfile.getUserSurname());
-                profilePhonenoTextView.setText(userProfile.getUserPhoneno());
+                profilePhonenoTextView.setText(userProfile.getUserPhone());
                 textViewemailname=(TextView)findViewById(R.id.textViewEmailAdress);
                 textViewemailname.setText(user.getEmail());
             }
@@ -95,23 +95,17 @@ public class ProfileActivity  extends AppCompatActivity {
         alert.setView(alertLayout);
         // disallow cancel of AlertDialog on click of back button and outside touch
         alert.setCancelable(false);
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
+        alert.setNegativeButton("Cancel", (dialog, which) -> {
         });
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String name = etUsername.getText().toString();
-                String surname = profileSurnameTextView.getText().toString();
-                String phoneno =  profilePhonenoTextView.getText().toString();
-                Userinformation userinformation = new Userinformation(name,surname, phoneno);
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                databaseReference.child(user.getUid()).setValue(userinformation);
-                databaseReference.child(user.getUid()).setValue(userinformation);
-                etUsername.onEditorAction(EditorInfo.IME_ACTION_DONE);
-            }
+        alert.setPositiveButton("OK", (dialog, which) -> {
+            String name = etUsername.getText().toString();
+            String surname = profileSurnameTextView.getText().toString();
+            String phone =  profilePhonenoTextView.getText().toString();
+            UserInformation UserInformation = new UserInformation(name,surname, phone);
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            databaseReference.child(user.getUid()).setValue(UserInformation);
+            databaseReference.child(user.getUid()).setValue(UserInformation);
+            etUsername.onEditorAction(EditorInfo.IME_ACTION_DONE);
         });
         AlertDialog dialog = alert.create();
         dialog.show();
@@ -126,24 +120,18 @@ public class ProfileActivity  extends AppCompatActivity {
         alert.setView(alertLayout);
         // disallow cancel of AlertDialog on click of back button and outside touch
         alert.setCancelable(false);
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
+        alert.setNegativeButton("Cancel", (dialog, which) -> {
         });
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        alert.setPositiveButton("OK", (dialog, which) -> {
 
-                String name = profileNameTextView.getText().toString();
-                String surname = etUserSurname.getText().toString();
-                String phoneno =  profilePhonenoTextView.getText().toString();
-                Userinformation userinformation = new Userinformation(name,surname, phoneno);
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                databaseReference.child(user.getUid()).setValue(userinformation);
-                databaseReference.child(user.getUid()).setValue(userinformation);
-                etUserSurname.onEditorAction(EditorInfo.IME_ACTION_DONE);
-            }
+            String name = profileNameTextView.getText().toString();
+            String surname = etUserSurname.getText().toString();
+            String phone =  profilePhonenoTextView.getText().toString();
+            UserInformation UserInformation = new UserInformation(name,surname, phone);
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            databaseReference.child(user.getUid()).setValue(UserInformation);
+            databaseReference.child(user.getUid()).setValue(UserInformation);
+            etUserSurname.onEditorAction(EditorInfo.IME_ACTION_DONE);
         });
         AlertDialog dialog = alert.create();
         dialog.show();
@@ -158,23 +146,17 @@ public class ProfileActivity  extends AppCompatActivity {
         alert.setView(alertLayout);
         // disallow cancel of AlertDialog on click of back button and outside touch
         alert.setCancelable(false);
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
+        alert.setNegativeButton("Cancel", (dialog, which) -> {
         });
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String name = profileNameTextView.getText().toString();
-                String surname = profileSurnameTextView.getText().toString();
-                String phoneno =  etUserPhoneno.getText().toString();
-                Userinformation userinformation = new Userinformation(name,surname, phoneno);
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                databaseReference.child(user.getUid()).setValue(userinformation);
-                databaseReference.child(user.getUid()).setValue(userinformation);
-                etUserPhoneno.onEditorAction(EditorInfo.IME_ACTION_DONE);
-            }
+        alert.setPositiveButton("OK", (dialog, which) -> {
+            String name = profileNameTextView.getText().toString();
+            String surname = profileSurnameTextView.getText().toString();
+            String phone =  etUserPhoneno.getText().toString();
+            UserInformation UserInformation = new UserInformation(name,surname, phone);
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            databaseReference.child(user.getUid()).setValue(UserInformation);
+            databaseReference.child(user.getUid()).setValue(UserInformation);
+            etUserPhoneno.onEditorAction(EditorInfo.IME_ACTION_DONE);
         });
         AlertDialog dialog = alert.create();
         dialog.show();
