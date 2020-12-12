@@ -74,13 +74,13 @@
                 android:inputType="textPersonName|textCapSentences"
                 android:hint="@string/enter_your_surname"/>
             <TextView
-                android:id="@+id/TextViewPhoneNo"
+                android:id="@+id/TextViewphone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/phone_number"
                 android:textColor="@color/colorPrimaryDark"/>
             <EditText
-                android:id="@+id/EditTextPhoneNo"
+                android:id="@+id/EditTextphone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"

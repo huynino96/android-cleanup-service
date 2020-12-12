@@ -1,6 +1,6 @@
 package com.example.firebaseauthproject;
 
-import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,7 +32,7 @@ import com.squareup.picasso.Picasso;
 public class ProfileActivity  extends AppCompatActivity {
 
     private DatabaseReference databaseReference;
-    private TextView profileNameTextView, profileSurnameTextView, profilePhonenoTextView;
+    private TextView profileNameTextView, profileSurnameTextView, profilePhoneTextView;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private ImageView profilePicImageView;
@@ -44,11 +44,11 @@ public class ProfileActivity  extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        editTextName = (EditText)findViewById(R.id.et_username);
+        editTextName = findViewById(R.id.et_username);
         profilePicImageView = findViewById(R.id.profile_pic_imageView);
         profileNameTextView = findViewById(R.id.profile_name_textView);
         profileSurnameTextView = findViewById(R.id.profile_surname_textView);
-        profilePhonenoTextView = findViewById(R.id.profile_phone_textView);
+        profilePhoneTextView = findViewById(R.id.profile_phone_textView);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
@@ -75,7 +75,7 @@ public class ProfileActivity  extends AppCompatActivity {
                 UserInformation userProfile = dataSnapshot.getValue(UserInformation.class);
                 profileNameTextView.setText(userProfile.getUserName());
                 profileSurnameTextView.setText(userProfile.getUserSurname());
-                profilePhonenoTextView.setText(userProfile.getUserPhone());
+                profilePhoneTextView.setText(userProfile.getUserPhone());
                 textViewemailname=(TextView)findViewById(R.id.textViewEmailAdress);
                 textViewemailname.setText(user.getEmail());
             }
@@ -100,7 +100,7 @@ public class ProfileActivity  extends AppCompatActivity {
         alert.setPositiveButton("OK", (dialog, which) -> {
             String name = etUsername.getText().toString();
             String surname = profileSurnameTextView.getText().toString();
-            String phone =  profilePhonenoTextView.getText().toString();
+            String phone =  profilePhoneTextView.getText().toString();
             UserInformation UserInformation = new UserInformation(name,surname, phone);
             FirebaseUser user = firebaseAuth.getCurrentUser();
             databaseReference.child(user.getUid()).setValue(UserInformation);
@@ -126,7 +126,7 @@ public class ProfileActivity  extends AppCompatActivity {
 
             String name = profileNameTextView.getText().toString();
             String surname = etUserSurname.getText().toString();
-            String phone =  profilePhonenoTextView.getText().toString();
+            String phone =  profilePhoneTextView.getText().toString();
             UserInformation UserInformation = new UserInformation(name,surname, phone);
             FirebaseUser user = firebaseAuth.getCurrentUser();
             databaseReference.child(user.getUid()).setValue(UserInformation);
@@ -136,10 +136,10 @@ public class ProfileActivity  extends AppCompatActivity {
         AlertDialog dialog = alert.create();
         dialog.show();
     }
-    public void buttonClickedEditPhoneNo(View view) {
+    public void buttonClickedEditphone(View view) {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.layout_custom_dialog_edit_phone, null);
-        final EditText etUserPhoneno = alertLayout.findViewById(R.id.et_phone);
+        final EditText etUserphone = alertLayout.findViewById(R.id.et_phone);
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Phone No Edit");
         // this is set the view from XML inside AlertDialog
@@ -151,12 +151,12 @@ public class ProfileActivity  extends AppCompatActivity {
         alert.setPositiveButton("OK", (dialog, which) -> {
             String name = profileNameTextView.getText().toString();
             String surname = profileSurnameTextView.getText().toString();
-            String phone =  etUserPhoneno.getText().toString();
+            String phone =  etUserphone.getText().toString();
             UserInformation UserInformation = new UserInformation(name,surname, phone);
             FirebaseUser user = firebaseAuth.getCurrentUser();
             databaseReference.child(user.getUid()).setValue(UserInformation);
             databaseReference.child(user.getUid()).setValue(UserInformation);
-            etUserPhoneno.onEditorAction(EditorInfo.IME_ACTION_DONE);
+            etUserphone.onEditorAction(EditorInfo.IME_ACTION_DONE);
         });
         AlertDialog dialog = alert.create();
         dialog.show();

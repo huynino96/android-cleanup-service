@@ -2,7 +2,7 @@ package com.example.firebaseauthproject;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,11 +21,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,13 +43,11 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     private static final String TAG = EditProfileActivity.class.getSimpleName();
     Button btnsave;
     private FirebaseAuth firebaseAuth;
-    private TextView textViewemailname;
     private DatabaseReference databaseReference;
     private EditText editTextName;
     private EditText editTextSurname;
-    private EditText editTextPhoneNo;
+    private EditText editTextphone;
     private ImageView profileImageView;
-    private FirebaseStorage firebaseStorage;
     private static int PICK_IMAGE = 123;
     Uri imagePath;
     private StorageReference storageReference;
@@ -79,32 +77,29 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             startActivity(new Intent(getApplicationContext(),SignInActivity.class));
         }
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        editTextName = (EditText)findViewById(R.id.EditTextName);
-        editTextSurname = (EditText)findViewById(R.id.EditTextSurname);
-        editTextPhoneNo = (EditText)findViewById(R.id.EditTextPhoneNo);
-        btnsave=(Button)findViewById(R.id.btnSaveButton);
+        editTextName = findViewById(R.id.EditTextName);
+        editTextSurname = findViewById(R.id.EditTextSurname);
+        editTextphone = findViewById(R.id.EditTextphone);
+        btnsave= findViewById(R.id.btnSaveButton);
         FirebaseUser user=firebaseAuth.getCurrentUser();
         btnsave.setOnClickListener(this);
-        textViewemailname=(TextView)findViewById(R.id.textViewEmailAdress);
+        TextView textViewemailname = findViewById(R.id.textViewEmailAdress);
         textViewemailname.setText(user.getEmail());
         profileImageView = findViewById(R.id.update_imageView);
-        firebaseStorage = FirebaseStorage.getInstance();
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
 
-        profileImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent profileIntent = new Intent();
-                profileIntent.setType("image/*");
-                profileIntent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(profileIntent, "Select Image."), PICK_IMAGE);
-            }
+        profileImageView.setOnClickListener(v -> {
+            Intent profileIntent = new Intent();
+            profileIntent.setType("image/*");
+            profileIntent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(profileIntent, "Select Image."), PICK_IMAGE);
         });
     }
     private void UserInformation(){
         String name = editTextName.getText().toString().trim();
         String surname = editTextSurname.getText().toString().trim();
-        String phone = editTextPhoneNo.getText().toString().trim();
+        String phone = editTextphone.getText().toString().trim();
         UserInformation UserInformation = new UserInformation(name,surname,phone);
         FirebaseUser user = firebaseAuth.getCurrentUser();
         databaseReference.child(user.getUid()).setValue(UserInformation);
@@ -138,12 +133,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getUid());
         StorageReference imageReference = storageReference.child(firebaseAuth.getUid()).child("Images").child("Profile Pic"); //User id/Images/Profile Pic.jpg
         UploadTask uploadTask = imageReference.putFile(imagePath);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(EditProfileActivity.this, "Error: Uploading profile picture", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        uploadTask.addOnFailureListener(e -> Toast.makeText(EditProfileActivity.this, "Error: Uploading profile picture", Toast.LENGTH_SHORT).show()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Toast.makeText(EditProfileActivity.this, "Profile picture uploaded", Toast.LENGTH_SHORT).show();
@@ -166,10 +156,8 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         msg.setGravity(Gravity.CENTER_HORIZONTAL);
         msg.setTextColor(Color.BLACK);
         alertDialog.setView(msg);
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                // Perform Action on Button
-            }
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"OK", (dialog, which) -> {
+            // Perform Action on Button
         });
         new Dialog(getApplicationContext());
         alertDialog.show();

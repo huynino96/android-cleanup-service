@@ -6,6 +6,10 @@ public class UserInformation {
     public String surname;
     public String phone;
 
+    public UserInformation(){
+
+    }
+
     public UserInformation(String name,String surname, String phone){
         this.name = name;
         this.surname = surname;
