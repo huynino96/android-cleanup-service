@@ -164,7 +164,7 @@ public class ProfileActivity  extends AppCompatActivity {
 
     public void navigateLogOut(View v){
         FirebaseAuth.getInstance().signOut();
-        Intent inent = new Intent(this, MainActivity.class);
-        startActivity(inent);
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

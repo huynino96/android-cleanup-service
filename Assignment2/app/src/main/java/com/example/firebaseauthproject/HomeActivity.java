@@ -31,8 +31,8 @@ public class HomeActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Home", Toast.LENGTH_SHORT).show();
                             break;
                         case R.id.action_profile:
-                            Intent inentProfile = new Intent(HomeActivity.this, ProfileActivity.class);
-                            startActivity(inentProfile);
+                            Intent intentProfile = new Intent(HomeActivity.this, ProfileActivity.class);
+                            startActivity(intentProfile);
                             break;
                     }
                     return true;

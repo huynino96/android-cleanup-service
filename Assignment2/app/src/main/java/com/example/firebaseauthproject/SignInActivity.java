@@ -63,11 +63,11 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void NavigateSignUp(View v) {
-        Intent inent = new Intent(this, SignUpActivity.class);
-        startActivity(inent);
+        Intent intent = new Intent(this, SignUpActivity.class);
+        startActivity(intent);
     }
     public void NavigateForgetMyPassword(View v) {
-        Intent inent = new Intent(this, ResetPasswordActivity.class);
-        startActivity(inent);
+        Intent intent = new Intent(this, ResetPasswordActivity.class);
+        startActivity(intent);
     }
 }

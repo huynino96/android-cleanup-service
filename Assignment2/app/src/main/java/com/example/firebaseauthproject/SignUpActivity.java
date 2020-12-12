@@ -64,7 +64,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void navigate_sign_in(View v){
-        Intent inent = new Intent(this, SignInActivity.class);
-        startActivity(inent);
+        Intent intent = new Intent(this, SignInActivity.class);
+        startActivity(intent);
     }
 }
