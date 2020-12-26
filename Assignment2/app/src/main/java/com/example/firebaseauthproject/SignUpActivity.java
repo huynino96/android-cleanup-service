@@ -45,8 +45,8 @@ public class SignUpActivity extends AppCompatActivity {
             if (pass.length() == 0){
                 Toast.makeText(getApplicationContext(),"Please enter your Password",Toast.LENGTH_LONG).show();
             }
-            if (pass.length()<8){
-                Toast.makeText(getApplicationContext(),"Password must be more than 8 digit",Toast.LENGTH_LONG).show();
+            if (pass.length()<6){
+                Toast.makeText(getApplicationContext(),"Password must be more than 6 digit",Toast.LENGTH_LONG).show();
             }
             else{
                 auth.createUserWithEmailAndPassword(email,pass)
