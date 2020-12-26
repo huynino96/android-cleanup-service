@@ -1,15 +1,21 @@
 package com.example.firebaseauthproject;
 
+import java.util.List;
+
 public class CleaningSite {
     private String siteName;
     private String address;
-    private String lat;
-    private String lon;
-    private String owner;
+    private double lat;
+    private double lon;
+    private String ownerId;
+    private List<Volunteer> volunteers;
 
-    public CleaningSite(String siteName, String address) {
+    public CleaningSite(String siteName, String address, double lat, double lon, String ownerId) {
         this.siteName = siteName;
         this.address = address;
+        this.lat = lat;
+        this.lon = lon;
+        this.ownerId = ownerId;
     }
 
     public String getSiteName() {
@@ -28,27 +34,35 @@ public class CleaningSite {
         this.address = address;
     }
 
-    public String getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public void setLat(String lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
 
-    public String getLon() {
+    public double getLon() {
         return lon;
     }
 
-    public void setLon(String lon) {
+    public void setLon(double lon) {
         this.lon = lon;
     }
 
-    public String getOwner() {
-        return owner;
+    public String getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public List<Volunteer> getVolunteers() {
+        return volunteers;
+    }
+
+    public void setVolunteers(List<Volunteer> volunteers) {
+        this.volunteers = volunteers;
     }
 }

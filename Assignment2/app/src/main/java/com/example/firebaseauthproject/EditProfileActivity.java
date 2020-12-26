@@ -38,7 +38,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 
-public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener{
+public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = EditProfileActivity.class.getSimpleName();
     Button btnsave;
@@ -71,17 +71,17 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-        firebaseAuth=FirebaseAuth.getInstance();
-        if (firebaseAuth.getCurrentUser() == null){
+        firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser() == null) {
             finish();
-            startActivity(new Intent(getApplicationContext(),SignInActivity.class));
+            startActivity(new Intent(getApplicationContext(), SignInActivity.class));
         }
         databaseReference = FirebaseDatabase.getInstance().getReference();
         editTextName = findViewById(R.id.EditTextName);
         editTextSurname = findViewById(R.id.EditTextSurname);
         editTextphone = findViewById(R.id.EditTextphone);
-        btnsave= findViewById(R.id.btnSaveButton);
-        FirebaseUser user=firebaseAuth.getCurrentUser();
+        btnsave = findViewById(R.id.btnSaveButton);
+        FirebaseUser user = firebaseAuth.getCurrentUser();
         btnsave.setOnClickListener(this);
         TextView textViewemailname = findViewById(R.id.textViewEmailAdress);
         textViewemailname.setText(user.getEmail());
@@ -96,27 +96,28 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             startActivityForResult(Intent.createChooser(profileIntent, "Select Image."), PICK_IMAGE);
         });
     }
-    private void UserInformation(){
+
+    private void UserInformation() {
         String name = editTextName.getText().toString().trim();
         String surname = editTextSurname.getText().toString().trim();
         String phone = editTextphone.getText().toString().trim();
-        UserInformation UserInformation = new UserInformation(name,surname,phone);
+        UserInformation UserInformation = new UserInformation(name, surname, phone);
         FirebaseUser user = firebaseAuth.getCurrentUser();
         databaseReference.child(user.getUid()).setValue(UserInformation);
-        Toast.makeText(getApplicationContext(),"User information updated",Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "User information updated", Toast.LENGTH_LONG).show();
     }
+
     @Override
     public void onClick(View view) {
-        if (view==btnsave){
+        if (view == btnsave) {
             if (imagePath == null) {
 
                 @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable = this.getResources().getDrawable(R.drawable.defavatar);
-                Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.defavatar);
+                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.defavatar);
                 // openSelectProfilePictureDialog();
                 UserInformation();
                 // sendUserData();
-            }
-            else {
+            } else {
                 UserInformation();
                 sendUserData();
             }
@@ -154,7 +155,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         msg.setGravity(Gravity.CENTER_HORIZONTAL);
         msg.setTextColor(Color.BLACK);
         alertDialog.setView(msg);
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"OK", (dialog, which) -> {
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK", (dialog, which) -> {
             // Perform Action on Button
         });
         new Dialog(getApplicationContext());

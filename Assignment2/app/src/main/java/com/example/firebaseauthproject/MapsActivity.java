@@ -18,12 +18,15 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private FirebaseAuth firebaseAuth;
     private static String TAG = MapsActivity.class.getSimpleName();
 
     @Override
@@ -34,6 +37,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        if (firebaseAuth.getCurrentUser() == null) {
+            finish();
+            startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+        }
 
         /**
          * Initialize Places. For simplicity, the API key is hard-coded. In a production
@@ -51,6 +61,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
 
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -58,6 +70,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // TODO: Get info about the selected place.
                 LatLng latLng = place.getLatLng();
                 LatLng location = new LatLng(latLng.latitude, latLng.longitude);
+                CleaningSite cleaningSite = new CleaningSite(place.getName(), place.getAddress(), latLng.latitude, latLng.longitude, user.getUid());
                 mMap.addMarker(new MarkerOptions().position(location).title(place.getName()));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
             }
