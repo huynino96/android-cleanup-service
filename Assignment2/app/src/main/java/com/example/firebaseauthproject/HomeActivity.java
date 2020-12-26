@@ -30,7 +30,9 @@ public class HomeActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Favorites", Toast.LENGTH_SHORT).show();
                             break;
                         case R.id.action_home:
-                            Toast.makeText(getApplicationContext(), "Home", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getApplicationContext(), "Home", Toast.LENGTH_SHORT).show();
+                            Intent intentMap = new Intent(HomeActivity.this, MapsActivity.class);
+                            startActivity(intentMap);
                             break;
                         case R.id.action_profile:
                             Intent intentProfile = new Intent(HomeActivity.this, ProfileActivity.class);
