@@ -115,15 +115,13 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 // openSelectProfilePictureDialog();
                 UserInformation();
                 // sendUserData();
-                finish();
-                startActivity(new Intent(EditProfileActivity.this, HomeActivity.class));
             }
             else {
                 UserInformation();
                 sendUserData();
-                finish();
-                startActivity(new Intent(EditProfileActivity.this, HomeActivity.class));
             }
+            finish();
+            startActivity(new Intent(EditProfileActivity.this, HomeActivity.class));
         }
     }
 
