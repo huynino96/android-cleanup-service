@@ -1,9 +1,30 @@
-package com.example.firebaseauthproject;
+package com.example.firebaseauthproject.models;
 
-public class Volunteer {
+public class User {
+
+    private String uid;
     private String name;
     private String email;
     private String phone;
+
+    public User(){
+
+    }
+
+    public User(String uid, String name, String email, String phone){
+        this.uid = uid;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public String getName() {
         return name;

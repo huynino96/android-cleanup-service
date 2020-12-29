@@ -1,18 +1,24 @@
 package com.example.firebaseauthproject;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.firebaseauthproject.models.CleaningSite;
+import com.example.firebaseauthproject.models.User;
+import com.example.firebaseauthproject.models.UserInformation;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -20,16 +26,23 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
     private DatabaseReference mDatabase;
+    private DatabaseReference mUserReference;
     private static String TAG = MapsActivity.class.getSimpleName();
 
     @Override
@@ -65,7 +78,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
 
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        user = firebaseAuth.getCurrentUser();
+        mUserReference = FirebaseDatabase.getInstance().getReference(user.getUid());
 
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -74,10 +88,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // TODO: Get info about the selected place.
                 LatLng latLng = place.getLatLng();
                 LatLng location = new LatLng(latLng.latitude, latLng.longitude);
-                CleaningSite cleaningSite = new CleaningSite(place.getName(), place.getAddress(), latLng.latitude, latLng.longitude, user.getUid());
+                CleaningSite cleaningSite = new CleaningSite(place.getName(), latLng.latitude, latLng.longitude);
                 mMap.addMarker(new MarkerOptions().position(location).title(place.getName()));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
-                mDatabase.child(user.getUid()).setValue(cleaningSite);
+                mUserReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        UserInformation userProfile = snapshot.getValue(UserInformation.class);
+                        DatabaseReference newCleaningSite = mDatabase.child("cleaningSites").push();
+                        newCleaningSite.getKey();
+                        newCleaningSite.setValue(cleaningSite);
+                        mDatabase.child("cleaningSites")
+                                .child(Objects.requireNonNull(newCleaningSite.getKey()))
+                                .child("owner")
+                                .setValue(
+                                        new User(
+                                                user.getUid(),
+                                                userProfile.getUserName(),
+                                                user.getEmail(),
+                                                userProfile.getUserPhone()
+                                        )
+                                );
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(MapsActivity.this, error.getCode(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
 
 
@@ -102,12 +141,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Nam Sai Gon and move the camera
-        LatLng namSaiGon = new LatLng(10.7123177, 106.7116815);
-        mMap.addMarker(new MarkerOptions().position(namSaiGon).title("Nam Sai Gon"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(namSaiGon));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(10.7123177, 106.7116815)));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(17.0f));
+        mDatabase.child("cleaningSites").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                    CleaningSite cleaningSite = snapshot.getValue(CleaningSite.class);
+                    LatLng position = new LatLng(cleaningSite.getLatitude(), cleaningSite.getLongitude());
+                    mMap.addMarker(new MarkerOptions().position(position).title(cleaningSite.getSiteName()));
+                    mMap.setOnMarkerClickListener(marker -> {
+                        Intent intent = new Intent(MapsActivity.this, CleaningSiteActivity.class);
+                        String uid = null;
+                        for (DataSnapshot snap: dataSnapshot.getChildren()) {
+                            CleaningSite item = snap.getValue(CleaningSite.class);
+                            if (item.getSiteName().equals(marker.getTitle())) {
+                                uid = snap.getKey();
+                            }
+                        }
+                        intent.putExtra("uid", uid);
+                        startActivity(intent);
+                        return false;
+                    });
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MapsActivity.this, error.getCode(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

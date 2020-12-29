@@ -1,4 +1,4 @@
-package com.example.firebaseauthproject;
+package com.example.firebaseauthproject.models;
 
 public class UserInformation {
 
