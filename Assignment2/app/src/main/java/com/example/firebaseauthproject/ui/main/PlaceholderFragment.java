@@ -10,13 +10,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.example.firebaseauthproject.MapsActivity;
 import com.example.firebaseauthproject.R;
 import com.example.firebaseauthproject.adapter.VolunteerListViewAdapter;
 import com.example.firebaseauthproject.models.CleaningSite;
@@ -41,6 +37,10 @@ public class PlaceholderFragment extends Fragment {
     private ListView volunteerListView;
     private VolunteerListViewAdapter volunteerListViewAdapter;
     private ArrayList<User> volunteers;
+    private static int[] resourceIds = {
+            R.layout.fragment_owner,
+            R.layout.fragment_volunteer
+    };
 
     public static PlaceholderFragment newInstance(int index) {
         PlaceholderFragment fragment = new PlaceholderFragment();
@@ -54,11 +54,12 @@ public class PlaceholderFragment extends Fragment {
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_cleaning_site, container, false);
-        final TextView siteNameTextView = root.findViewById(R.id.site_name);
-        final TextView nameTextView = root.findViewById(R.id.name);
-        final TextView emailTextView = root.findViewById(R.id.email);
-        final TextView phoneTextView = root.findViewById(R.id.phone);
+        int index = getArguments().getInt(ARG_SECTION_NUMBER);
+        View rootView = inflater.inflate(resourceIds[index], container, false);
+        final TextView siteNameTextView = (TextView) rootView.findViewById(R.id.site_name);
+        final TextView nameTextView = (TextView) rootView.findViewById(R.id.name);
+        final TextView emailTextView = (TextView) rootView.findViewById(R.id.email);
+        final TextView phoneTextView = (TextView) rootView.findViewById(R.id.phone);
 
         Intent intent = getActivity().getIntent();
         String uid = intent.getStringExtra("uid");
@@ -68,21 +69,18 @@ public class PlaceholderFragment extends Fragment {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                CleaningSite cleaningSite = dataSnapshot.getValue(CleaningSite.class);
-                UserInformation userInformation = dataSnapshot.child("owner").getValue(UserInformation.class);
-
-                int index = 1;
-                if (getArguments() != null) {
-                    index = getArguments().getInt(ARG_SECTION_NUMBER);
-                }
-                if (index == 1) {
+                // Generate owner
+                if (index < 1) {
+                    CleaningSite cleaningSite = dataSnapshot.getValue(CleaningSite.class);
+                    UserInformation userInformation = dataSnapshot.child("owner").getValue(UserInformation.class);
                     siteNameTextView.setText("Site Name: " + cleaningSite.getSiteName());
                     nameTextView.setText("Name: " + userInformation.getUserName());
                     emailTextView.setText("Email: " + user.getEmail());
                     phoneTextView.setText("Phone: " + userInformation.getUserPhone());
                 }
 
-                if (index == 2) {
+                // Generate volunteers
+                if (index > 0) {
                     volunteers = new ArrayList<>();
 
                     for (DataSnapshot snapshot: dataSnapshot.child("volunteers").getChildren()) {
@@ -92,7 +90,7 @@ public class PlaceholderFragment extends Fragment {
 
                     volunteerListViewAdapter = new VolunteerListViewAdapter(volunteers);
 
-                    volunteerListView = getActivity().findViewById(R.id.volunteers);
+                    volunteerListView = getActivity().findViewById(R.id.volunteer_list);
                     volunteerListView.setAdapter(volunteerListViewAdapter);
                 }
             }
@@ -103,6 +101,6 @@ public class PlaceholderFragment extends Fragment {
             }
         });
 
-        return root;
+        return rootView;
     }
 }

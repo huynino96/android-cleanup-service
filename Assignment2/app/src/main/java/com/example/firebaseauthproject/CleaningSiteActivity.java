@@ -49,23 +49,50 @@ public class CleaningSiteActivity extends AppCompatActivity {
             public void onClick(View view) {
                 mDatabase.child(mUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        UserInformation userInformation = snapshot.getValue(UserInformation.class);
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        UserInformation userInformation = dataSnapshot.getValue(UserInformation.class);
                         String uid = getIntent().getStringExtra("uid");
-                        mDatabase.child("cleaningSites")
+                        DatabaseReference mVolunteerReference = mDatabase.child("cleaningSites")
                                 .child(uid)
-                                .child("volunteers")
-                                .push()
-                                .setValue(
-                                        new User(
-                                                mUser.getUid(),
-                                                userInformation.getUserName(),
-                                                mUser.getEmail(),
-                                                userInformation.getUserPhone()
-                                        )
-                                );
-                        Snackbar.make(view, "Joined", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
+                                .child("volunteers");
+                        mVolunteerReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshots) {
+                                boolean isExist = false;
+                                for (DataSnapshot snapshot : snapshots.getChildren()) {
+                                    User user = snapshot.getValue(User.class);
+                                    if (user.getUid().equals(mUser.getUid())) {
+                                        snapshot.getRef().removeValue();
+                                        Snackbar.make(view, "Leaved", Snackbar.LENGTH_LONG)
+                                                .setAction("Action", null).show();
+                                        isExist = true;
+                                        break;
+                                    }
+                                }
+
+                                // If exists then leave, otherwise, join
+                                if (!isExist) {
+                                    mVolunteerReference
+                                            .push()
+                                            .setValue(
+                                                    new User(
+                                                            mUser.getUid(),
+                                                            userInformation.getUserName(),
+                                                            mUser.getEmail(),
+                                                            userInformation.getUserPhone()
+                                                    )
+                                            );
+
+                                    Snackbar.make(view, "Joined", Snackbar.LENGTH_LONG)
+                                            .setAction("Action", null).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                     }
 
                     @Override
