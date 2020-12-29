@@ -35,24 +35,25 @@ public class SignUpActivity extends AppCompatActivity {
             String email = SignUpMail.getText().toString();
             String pass = SignUpPass.getText().toString();
 
-            if(TextUtils.isEmpty(email)){
+            if (TextUtils.isEmpty(email)) {
                 Toast.makeText(getApplicationContext(),"Please enter your E-mail address",Toast.LENGTH_LONG).show();
                 return;
             }
-            if(TextUtils.isEmpty(pass)){
+            if (TextUtils.isEmpty(pass)) {
                 Toast.makeText(getApplicationContext(),"Please enter your Password",Toast.LENGTH_LONG).show();
             }
-            if (pass.length() == 0){
+            if (pass.length() == 0) {
                 Toast.makeText(getApplicationContext(),"Please enter your Password",Toast.LENGTH_LONG).show();
             }
-            if (pass.length()<6){
+            if (pass.length() < 6) {
                 Toast.makeText(getApplicationContext(),"Password must be more than 6 digit",Toast.LENGTH_LONG).show();
             }
-            else{
+            else {
                 auth.createUserWithEmailAndPassword(email,pass)
                         .addOnCompleteListener(SignUpActivity.this, task -> {
 
                             if (!task.isSuccessful()) {
+                                String message = task.getException().getMessage();
                                 Toast.makeText(SignUpActivity.this, "ERROR",Toast.LENGTH_LONG).show();
                             }
                             else {

@@ -10,6 +10,10 @@ public class CleaningSite {
     private String ownerId;
     private List<Volunteer> volunteers;
 
+    public CleaningSite() {
+
+    }
+
     public CleaningSite(String siteName, String address, double lat, double lon, String ownerId) {
         this.siteName = siteName;
         this.address = address;

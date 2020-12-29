@@ -20,6 +20,8 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 
@@ -27,6 +29,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private FirebaseAuth firebaseAuth;
+    private DatabaseReference mDatabase;
     private static String TAG = MapsActivity.class.getSimpleName();
 
     @Override
@@ -39,6 +42,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         if (firebaseAuth.getCurrentUser() == null) {
             finish();
@@ -50,7 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
          * environment we recommend using a secure mechanism to manage API keys.
          */
         if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), getString(R.string.google_api_key));
+            Places.initialize(getApplicationContext(), "AIzaSyCHuKb9Ih7QZr50Hbbl4fUHce5veWsWlN8");
         }
 
 
@@ -73,6 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 CleaningSite cleaningSite = new CleaningSite(place.getName(), place.getAddress(), latLng.latitude, latLng.longitude, user.getUid());
                 mMap.addMarker(new MarkerOptions().position(location).title(place.getName()));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+                mDatabase.child(user.getUid()).setValue(cleaningSite);
             }
 
 

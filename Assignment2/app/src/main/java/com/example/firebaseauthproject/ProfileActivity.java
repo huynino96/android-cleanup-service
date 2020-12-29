@@ -29,7 +29,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
-public class ProfileActivity  extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity {
 
     private DatabaseReference databaseReference;
     private TextView profileNameTextView, profileSurnameTextView, profilePhoneTextView;
@@ -64,11 +64,11 @@ public class ProfileActivity  extends AppCompatActivity {
                 Picasso.get().load(uri).fit().centerInside().into(profilePicImageView);
             }
         });
-        if (firebaseAuth.getCurrentUser() == null){
+        if (firebaseAuth.getCurrentUser() == null) {
             finish();
-            startActivity(new Intent(getApplicationContext(),SignInActivity.class));
+            startActivity(new Intent(getApplicationContext(), SignInActivity.class));
         }
-        final FirebaseUser user=firebaseAuth.getCurrentUser();
+        final FirebaseUser user = firebaseAuth.getCurrentUser();
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -76,15 +76,17 @@ public class ProfileActivity  extends AppCompatActivity {
                 profileNameTextView.setText(userProfile.getUserName());
                 profileSurnameTextView.setText(userProfile.getUserSurname());
                 profilePhoneTextView.setText(userProfile.getUserPhone());
-                textViewemailname=(TextView)findViewById(R.id.textViewEmailAdress);
+                textViewemailname = (TextView) findViewById(R.id.textViewEmailAdress);
                 textViewemailname.setText(user.getEmail());
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(ProfileActivity.this, databaseError.getCode(), Toast.LENGTH_SHORT).show();
             }
         });
     }
+
     public void buttonClickedEditName(View view) {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.layout_custom_dialog_edit_name, null);
@@ -95,13 +97,12 @@ public class ProfileActivity  extends AppCompatActivity {
         alert.setView(alertLayout);
         // disallow cancel of AlertDialog on click of back button and outside touch
         alert.setCancelable(false);
-        alert.setNegativeButton("Cancel", (dialog, which) -> {
-        });
+        alert.setNegativeButton("Cancel", (dialog, which) -> {});
         alert.setPositiveButton("OK", (dialog, which) -> {
             String name = etUsername.getText().toString();
             String surname = profileSurnameTextView.getText().toString();
-            String phone =  profilePhoneTextView.getText().toString();
-            UserInformation UserInformation = new UserInformation(name,surname, phone);
+            String phone = profilePhoneTextView.getText().toString();
+            UserInformation UserInformation = new UserInformation(name, surname, phone);
             FirebaseUser user = firebaseAuth.getCurrentUser();
             databaseReference.child(user.getUid()).setValue(UserInformation);
             databaseReference.child(user.getUid()).setValue(UserInformation);
@@ -110,6 +111,7 @@ public class ProfileActivity  extends AppCompatActivity {
         AlertDialog dialog = alert.create();
         dialog.show();
     }
+
     public void buttonClickedEditSurname(View view) {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.layout_custom_dialog_edit_surname, null);
@@ -120,14 +122,13 @@ public class ProfileActivity  extends AppCompatActivity {
         alert.setView(alertLayout);
         // disallow cancel of AlertDialog on click of back button and outside touch
         alert.setCancelable(false);
-        alert.setNegativeButton("Cancel", (dialog, which) -> {
-        });
+        alert.setNegativeButton("Cancel", (dialog, which) -> {});
         alert.setPositiveButton("OK", (dialog, which) -> {
 
             String name = profileNameTextView.getText().toString();
             String surname = etUserSurname.getText().toString();
-            String phone =  profilePhoneTextView.getText().toString();
-            UserInformation UserInformation = new UserInformation(name,surname, phone);
+            String phone = profilePhoneTextView.getText().toString();
+            UserInformation UserInformation = new UserInformation(name, surname, phone);
             FirebaseUser user = firebaseAuth.getCurrentUser();
             databaseReference.child(user.getUid()).setValue(UserInformation);
             databaseReference.child(user.getUid()).setValue(UserInformation);
@@ -136,6 +137,7 @@ public class ProfileActivity  extends AppCompatActivity {
         AlertDialog dialog = alert.create();
         dialog.show();
     }
+
     public void buttonClickedEditphone(View view) {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.layout_custom_dialog_edit_phone, null);
@@ -146,13 +148,12 @@ public class ProfileActivity  extends AppCompatActivity {
         alert.setView(alertLayout);
         // disallow cancel of AlertDialog on click of back button and outside touch
         alert.setCancelable(false);
-        alert.setNegativeButton("Cancel", (dialog, which) -> {
-        });
+        alert.setNegativeButton("Cancel", (dialog, which) -> {});
         alert.setPositiveButton("OK", (dialog, which) -> {
             String name = profileNameTextView.getText().toString();
             String surname = profileSurnameTextView.getText().toString();
-            String phone =  etUserphone.getText().toString();
-            UserInformation UserInformation = new UserInformation(name,surname, phone);
+            String phone = etUserphone.getText().toString();
+            UserInformation UserInformation = new UserInformation(name, surname, phone);
             FirebaseUser user = firebaseAuth.getCurrentUser();
             databaseReference.child(user.getUid()).setValue(UserInformation);
             databaseReference.child(user.getUid()).setValue(UserInformation);
@@ -162,7 +163,7 @@ public class ProfileActivity  extends AppCompatActivity {
         dialog.show();
     }
 
-    public void navigateLogOut(View v){
+    public void navigateLogOut(View v) {
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
